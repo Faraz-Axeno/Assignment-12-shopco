@@ -39,18 +39,34 @@
     flex-shrink: 0;
 }
 @media (max-width: 768px) {
-    .pl-sidebar {
+    .sidebar-wrapper {
         position: fixed;
         top: 0;
-        left: -100%;
-        height: 100%;
-        z-index: 100;
-        transition: left 0.3s;
-        border-radius: 0;
-        overflow-y: auto;
-    }
-    .pl-sidebar.active {
         left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 99;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        
+        &.active {
+            display: flex;
+        }
+    }
+
+    .pl-sidebar {
+        position: relative;
+        width: 90%;
+        max-width: 400px;
+        max-height: 90vh;
+        z-index: 100;
+        border-radius: 20px;
+        overflow-y: auto;
+        left: auto;
+        top: auto;
+        height: auto;
     }
 }
 
@@ -297,7 +313,8 @@
 
 @media (max-width: 480px) {
     .listing-product-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 }
 

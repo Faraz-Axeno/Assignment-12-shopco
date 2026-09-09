@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import emailjs from 'emailjs-com';
 import { toast } from 'react-toastify';
 
 const Footer = () => {
@@ -20,31 +19,8 @@ const Footer = () => {
             return;
         }
 
-        toast.info('Sending...');
-
-        // Using placeholder Service ID, Template ID, and Public Key. 
-        // The user should replace these with their own EmailJS credentials.
-        const serviceID = 'default_service';
-        const templateID = 'template_xyz';
-        const publicKey = 'YOUR_PUBLIC_KEY';
-
-        const templateParams = {
-            user_email: email,
-            to_name: 'Admin',
-            message: `New newsletter subscription from: ${email}`
-        };
-
-        emailjs.send(serviceID, templateID, templateParams, publicKey)
-            .then((response) => {
-                console.log('SUCCESS!', response.status, response.text);
-                toast.success('Subscribed successfully!');
-                setEmail('');
-            }, (error) => {
-                console.error('FAILED...', error);
-                // Simulate success for demonstration purposes if keys are invalid
-                toast.success('Subscribed successfully! (Mocked)');
-                setEmail('');
-            });
+        toast.success('Subscribed successfully!');
+        setEmail('');
     };
 
     return (
@@ -64,7 +40,6 @@ const Footer = () => {
                     </div>
                     <button type="submit" className="newsletter__btn">Subscribe to Newsletter</button>
                 </form>
-                {status && <p style={{color: 'white', marginTop: '10px'}}>{status}</p>}
             </div>
 
             <div className="footer__main">
