@@ -1,0 +1,94 @@
+/* Auth Pages */
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  background: #f9f9f9;
+  padding: 40px 20px;
+
+  .login-container {
+    background: #fff;
+    padding: 50px 40px;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+
+    .login-title {
+      font-size: 2.5rem;
+      font-weight: 900;
+      margin-bottom: 10px;
+      letter-spacing: -1px;
+    }
+
+    .login-subtitle {
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    .login-desc {
+      color: #777;
+      margin-bottom: 30px;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      text-align: left;
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        .form-label {
+          font-weight: 600;
+          color: #444;
+          font-size: 0.9rem;
+        }
+
+        .form-input {
+          padding: 15px;
+          border: 1.5px solid #eaeaea;
+          border-radius: 10px;
+          font-size: 1rem;
+          transition: all 0.3s;
+
+          &:focus {
+            border-color: #000;
+            outline: none;
+          }
+        }
+      }
+
+      .login-btn {
+        margin-top: 10px;
+        padding: 16px;
+        border-radius: 30px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: transform 0.2s;
+
+        &:hover {
+          transform: translateY(-2px);
+        }
+      }
+    }
+
+    .login-footer {
+      margin-top: 30px;
+      color: #666;
+
+      .login-link {
+        color: #000;
+        font-weight: 600;
+        text-decoration: underline;
+      }
+    }
+  }
+}

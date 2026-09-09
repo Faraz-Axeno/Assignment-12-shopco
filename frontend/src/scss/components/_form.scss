@@ -1,0 +1,26 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/functions' as *;
+@use '../abstracts/mixins' as *;
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: rem(8);
+    width: 100%;
+
+    label {
+        font-size: rem(14);
+        font-weight: 500;
+    }
+
+    input {
+        background-color: $color-background;
+        border-radius: $radius-sm;
+        padding: rem(14) rem(16);
+        font-size: rem(16);
+        width: 100%;
+
+        &::placeholder {
+            color: $color-text-muted;
+        }
+    }
+}

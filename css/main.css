@@ -1207,11 +1207,19 @@ html, body {
   height: 18.0625rem;
   box-sizing: border-box;
   transition: transform 0.2s;
-  font-size: 0;
-  color: transparent;
 }
 .style-card:hover {
   transform: scale(0.98);
+}
+.style-card__title {
+  position: absolute;
+  top: 1.5625rem;
+  left: 2.1875rem;
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #000;
+  z-index: 2;
+  margin: 0;
 }
 .style-card__image {
   position: absolute;
@@ -1549,6 +1557,11 @@ html, body {
     height: 11.875rem;
     width: 100%;
     grid-column: unset;
+  }
+  .style-card__title {
+    font-size: 1.5rem;
+    top: 1rem;
+    left: 1.5rem;
   }
   .style-card .style-card__image {
     width: 100%;
@@ -2844,4 +2857,286 @@ html, body {
   font-size: 0.875rem;
   margin-bottom: 1rem;
   text-align: center;
+}
+
+/* Admin Dashboard Styles */
+.admin-dashboard {
+  display: flex;
+  min-height: 80vh;
+  margin-top: 20px;
+  background: #f4f7f6;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+.admin-dashboard .admin-sidebar {
+  width: 250px;
+  background: #111;
+  color: #fff;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+}
+.admin-dashboard .admin-sidebar .admin-logo {
+  font-size: 1.5rem;
+  margin-bottom: 40px;
+  text-align: center;
+  letter-spacing: 2px;
+  color: #fff;
+}
+.admin-dashboard .admin-sidebar .admin-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.admin-dashboard .admin-sidebar .admin-nav button {
+  background: transparent;
+  color: #888;
+  border: none;
+  padding: 15px;
+  text-align: left;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: all 0.3s;
+}
+.admin-dashboard .admin-sidebar .admin-nav button:hover, .admin-dashboard .admin-sidebar .admin-nav button.active {
+  background: #333;
+  color: #fff;
+}
+.admin-dashboard .admin-main {
+  flex: 1;
+  padding: 40px;
+  background: #fff;
+  overflow-y: auto;
+}
+.admin-dashboard .admin-main .section-header {
+  margin-bottom: 30px;
+  font-size: 2rem;
+  color: #222;
+}
+.admin-dashboard .admin-main .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+.admin-dashboard .admin-main .stats-grid .stat-card {
+  padding: 25px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  transition: transform 0.3s;
+}
+.admin-dashboard .admin-main .stats-grid .stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+.admin-dashboard .admin-main .stats-grid .stat-card h3 {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 10px;
+}
+.admin-dashboard .admin-main .stats-grid .stat-card .stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #111;
+}
+.admin-dashboard .admin-main .stats-grid .stat-card.warning {
+  background: #fff8e1;
+  border-color: #ffe082;
+}
+.admin-dashboard .admin-main .stats-grid .stat-card.warning h3, .admin-dashboard .admin-main .stats-grid .stat-card.warning .stat-value {
+  color: #f57f17;
+}
+.admin-dashboard .admin-main .stats-grid .stat-card.danger {
+  background: #ffebee;
+  border-color: #ef9a9a;
+}
+.admin-dashboard .admin-main .stats-grid .stat-card.danger h3, .admin-dashboard .admin-main .stats-grid .stat-card.danger .stat-value {
+  color: #c62828;
+}
+.admin-dashboard .admin-main .table-container {
+  overflow-x: auto;
+}
+.admin-dashboard .admin-main .table-container .admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.admin-dashboard .admin-main .table-container .admin-table th, .admin-dashboard .admin-main .table-container .admin-table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+.admin-dashboard .admin-main .table-container .admin-table th {
+  background: #f9f9f9;
+  font-weight: 600;
+  color: #444;
+}
+.admin-dashboard .admin-main .table-container .admin-table tr:hover {
+  background: #fafafa;
+}
+.admin-dashboard .admin-main .table-container .admin-table .badge {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.admin-dashboard .admin-main .table-container .admin-table .badge-success {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+.admin-dashboard .admin-main .table-container .admin-table .badge-warning {
+  background: #fff8e1;
+  color: #f57f17;
+}
+.admin-dashboard .admin-main .table-container .admin-table .badge-danger {
+  background: #ffebee;
+  color: #c62828;
+}
+.admin-dashboard .admin-main .table-container .admin-table .status-select {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+.admin-dashboard .admin-main .table-container .admin-table .btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  opacity: 0.7;
+  transition: 0.2s;
+}
+.admin-dashboard .admin-main .table-container .admin-table .btn-icon:hover {
+  opacity: 1;
+}
+.admin-dashboard .admin-main .form-wrapper {
+  max-width: 600px;
+}
+.admin-dashboard .admin-main .form-wrapper .admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.admin-dashboard .admin-main .form-wrapper .admin-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.admin-dashboard .admin-main .form-wrapper .admin-form .form-group label {
+  font-weight: 500;
+  color: #444;
+}
+.admin-dashboard .admin-main .form-wrapper .admin-form .form-group input, .admin-dashboard .admin-main .form-wrapper .admin-form .form-group select, .admin-dashboard .admin-main .form-wrapper .admin-form .form-group textarea {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border 0.3s;
+}
+.admin-dashboard .admin-main .form-wrapper .admin-form .form-group input:focus, .admin-dashboard .admin-main .form-wrapper .admin-form .form-group select:focus, .admin-dashboard .admin-main .form-wrapper .admin-form .form-group textarea:focus {
+  border-color: #111;
+  outline: none;
+}
+.admin-dashboard .admin-main .form-wrapper .admin-form .form-group-row {
+  display: flex;
+  gap: 20px;
+}
+.admin-dashboard .admin-main .form-wrapper .admin-form .form-group-row .form-group {
+  flex: 1;
+}
+.admin-dashboard .admin-main .form-wrapper .admin-form .image-preview img {
+  margin-top: 10px;
+  width: 100px;
+  border-radius: 8px;
+}
+.admin-dashboard .admin-main .form-wrapper .admin-form .form-btn {
+  padding: 15px;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+/* Auth Pages */
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  background: #f9f9f9;
+  padding: 40px 20px;
+}
+.login-page .login-container {
+  background: #fff;
+  padding: 50px 40px;
+  border-radius: 16px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 450px;
+  text-align: center;
+}
+.login-page .login-container .login-title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 10px;
+  letter-spacing: -1px;
+}
+.login-page .login-container .login-subtitle {
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+  color: #333;
+}
+.login-page .login-container .login-desc {
+  color: #777;
+  margin-bottom: 30px;
+}
+.login-page .login-container .login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: left;
+}
+.login-page .login-container .login-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.login-page .login-container .login-form .form-group .form-label {
+  font-weight: 600;
+  color: #444;
+  font-size: 0.9rem;
+}
+.login-page .login-container .login-form .form-group .form-input {
+  padding: 15px;
+  border: 1.5px solid #eaeaea;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+.login-page .login-container .login-form .form-group .form-input:focus {
+  border-color: #000;
+  outline: none;
+}
+.login-page .login-container .login-form .login-btn {
+  margin-top: 10px;
+  padding: 16px;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: transform 0.2s;
+}
+.login-page .login-container .login-form .login-btn:hover {
+  transform: translateY(-2px);
+}
+.login-page .login-container .login-footer {
+  margin-top: 30px;
+  color: #666;
+}
+.login-page .login-container .login-footer .login-link {
+  color: #000;
+  font-weight: 600;
+  text-decoration: underline;
 }/*# sourceMappingURL=main.css.map */
