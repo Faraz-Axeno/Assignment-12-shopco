@@ -124,11 +124,11 @@ const ProductListing = () => {
                         </div>
                     
                     <ul className="pl-filter-list pl-filter-section">
-                        {categories.map((cat) => (
-                            <li key={cat._id}>
-                                <label className={category === cat._id ? 'active' : ''}>
-                                    <input type="radio" name="type" value={cat._id} checked={category === cat._id} onChange={() => { setCategory(cat._id); setPage(1); setIsMobileFilterOpen(false); }} />
-                                    {cat.name} <span>&gt;</span>
+                        {['T-shirts', 'Shorts', 'Shirts', 'Hoodies', 'Jeans'].map((type, idx) => (
+                            <li key={idx}>
+                                <label className={selectedTypeFilter === type ? 'active' : ''}>
+                                    <input type="radio" name="type" value={type} checked={selectedTypeFilter === type} onChange={(e) => setSelectedTypeFilter(e.target.value)} />
+                                    {type} <span>&gt;</span>
                                 </label>
                             </li>
                         ))}
