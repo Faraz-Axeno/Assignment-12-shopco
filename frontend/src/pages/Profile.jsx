@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Profile = () => {
     const { user } = useContext(AuthContext);
@@ -12,7 +13,6 @@ const Profile = () => {
     const [email, setEmail] = useState(user?.email || '');
     const [phone, setPhone] = useState('');
     const [address, setAddress] = useState('');
-    const [updateMsg, setUpdateMsg] = useState('');
 
     useEffect(() => {
         const fetchProfileData = async () => {
@@ -26,6 +26,7 @@ const Profile = () => {
                 setOrders(userOrders);
             } catch (error) {
                 console.error(error);
+                toast.error('Failed to load profile data');
             }
             setLoading(false);
         };
@@ -38,9 +39,10 @@ const Profile = () => {
             const config = { headers: { Authorization: `Bearer ${user?._id}` } };
             await axios.put(`http://localhost:5000/api/orders/${orderId}/cancel`, {}, config);
             setOrders(orders.map(o => o._id === orderId ? { ...o, status: 'Cancelled' } : o));
+            toast.success('Order cancelled successfully');
         } catch (error) {
             console.error(error);
-            alert('Failed to cancel order');
+            toast.error(error.response?.data?.message || 'Failed to cancel order');
         }
     };
 
@@ -49,10 +51,9 @@ const Profile = () => {
         try {
             const config = { headers: { Authorization: `Bearer ${user?._id}` } };
             await axios.put('http://localhost:5000/api/users/profile', { name, email, phone, address }, config);
-            setUpdateMsg('Profile updated successfully');
-            setTimeout(() => setUpdateMsg(''), 3000);
+            toast.success('Profile updated successfully');
         } catch (error) {
-            setUpdateMsg('Error updating profile');
+            toast.error(error.response?.data?.message || 'Error updating profile');
         }
     };
 
@@ -84,16 +85,14 @@ const Profile = () => {
                 
                 {isExpanded && (
                     <div className="profile-fade-in">
-                        {updateMsg && <p className={"profile-msg " + (updateMsg.includes('Error') ? 'profile-msg--error' : 'profile-msg--success')}>{updateMsg}</p>}
-                        
-                        <form onSubmit={handleUpdate}>
+                        <form onSubmit={handleUpdate} noValidate>
                             <div className="profile-form-group">
                                 <label>Name</label>
                                 <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
                             </div>
                             <div className="profile-form-group">
                                 <label>Email</label>
-                                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                                <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
                             </div>
                             <div className="profile-form-group">
                                 <label>Phone</label>

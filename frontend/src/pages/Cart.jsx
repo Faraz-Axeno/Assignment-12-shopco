@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { CartContext } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 
 const Cart = () => {
     const { cartItems, removeFromCart, updateQty, cartTotals, applyCoupon, discount, clearCart } = useContext(CartContext);
@@ -17,8 +18,10 @@ const Cart = () => {
         if (code === 'SAVE10' || code === 'SAVE20') {
             applyCoupon(code);
             setCouponError('');
+            toast.success(`Coupon ${code} applied successfully!`);
         } else {
             setCouponError('Invalid coupon code');
+            toast.error('Invalid coupon code');
             applyCoupon('');
         }
     };
@@ -48,9 +51,10 @@ const Cart = () => {
 
             await axios.post('http://localhost:5000/api/orders', orderData, config);
             clearCart();
+            toast.success('Order placed successfully!');
             setShowModal(true);
         } catch (error) {
-            alert(error.response?.data?.message || 'Checkout failed');
+            toast.error(error.response?.data?.message || 'Checkout failed');
         }
     };
 

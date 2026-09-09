@@ -1,27 +1,31 @@
 import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 
 const Signup = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState('');
     const { register } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const submitHandler = async (e) => {
         e.preventDefault();
+        
+        // We still keep the password match check on the frontend 
+        // since it's just checking two form fields against each other.
         if (password !== confirmPassword) {
-            setError('Passwords do not match');
+            toast.error('Passwords do not match');
             return;
         }
+        
         try {
             await register(name, email, password);
             navigate('/');
         } catch (err) {
-            setError(err.response?.data?.message || 'Error registering');
+            toast.error(err.response?.data?.message || 'Error registering');
         }
     };
 
@@ -31,16 +35,13 @@ const Signup = () => {
                 <h1 className="login-title">SHOP.CO</h1>
                 <h2 className="login-subtitle">Create an account</h2>
 
-                {error && <div className="error-message" style={{color: 'red', marginBottom: '10px'}}>{error}</div>}
-
-                <form className="login-form" onSubmit={submitHandler}>
+                <form className="login-form" onSubmit={submitHandler} noValidate>
                     <div className="form-group">
                         <label htmlFor="name" className="form-label">Name</label>
                         <input 
                             type="text" 
                             id="name" 
                             className="form-input" 
-                            required 
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                         />
@@ -48,10 +49,9 @@ const Signup = () => {
                     <div className="form-group">
                         <label htmlFor="email" className="form-label">Email</label>
                         <input 
-                            type="email" 
+                            type="text" 
                             id="email" 
                             className="form-input" 
-                            required 
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
@@ -62,7 +62,6 @@ const Signup = () => {
                             type="password" 
                             id="password" 
                             className="form-input" 
-                            required 
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
@@ -73,7 +72,6 @@ const Signup = () => {
                             type="password" 
                             id="confirmPassword" 
                             className="form-input" 
-                            required 
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
                         />

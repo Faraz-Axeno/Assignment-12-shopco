@@ -5,7 +5,7 @@ const addOrderItems = async (req, res, next) => {
     try {
         const { orderItems, shippingAddress, discountAmount } = req.body;
 
-        if (orderItems && orderItems.length === 0) {
+        if (!orderItems || orderItems.length === 0) {
             res.status(400);
             throw new Error('No order items');
         } else {

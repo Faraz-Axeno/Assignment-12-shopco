@@ -69,14 +69,29 @@ const getProductById = async (req, res, next) => {
 
 const createProduct = async (req, res, next) => {
     try {
+        const { name, price, description, images, category, quantity } = req.body;
+
+        if (!name || name.trim() === '') {
+            res.status(400);
+            throw new Error('Product name is required');
+        }
+        if (price === undefined || price < 0) {
+            res.status(400);
+            throw new Error('Valid product price is required');
+        }
+        if (!category) {
+            res.status(400);
+            throw new Error('Product category is required');
+        }
+
         const product = new Product({
-            name: req.body.name || 'Sample name',
-            price: req.body.price || 0,
+            name: name,
+            price: price,
             user: req.user._id,
-            images: req.body.images || ['/images/sample.jpg'],
-            category: req.body.category,
-            quantity: req.body.quantity || 0,
-            description: req.body.description || 'Sample description',
+            images: images && images.length > 0 ? images : ['/images/sample.jpg'],
+            category: category,
+            quantity: quantity || 0,
+            description: description || 'No description provided',
         });
         const createdProduct = await product.save();
         res.status(201).json(createdProduct);
@@ -91,10 +106,21 @@ const updateProduct = async (req, res, next) => {
         const product = await Product.findById(req.params.id);
 
         if (product) {
+            if (name !== undefined && name.trim() === '') {
+                res.status(400);
+                throw new Error('Product name cannot be empty');
+            }
+            if (price !== undefined && price < 0) {
+                res.status(400);
+                throw new Error('Product price cannot be negative');
+            }
+
             product.name = name || product.name;
             product.price = price !== undefined ? price : product.price;
             product.description = description || product.description;
-            product.images = images || product.images;
+            if (images && images.length > 0) {
+                product.images = images;
+            }
             product.category = category || product.category;
             product.quantity = quantity !== undefined ? quantity : product.quantity;
 

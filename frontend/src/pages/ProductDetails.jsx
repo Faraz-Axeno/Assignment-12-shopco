@@ -4,6 +4,7 @@ import axios from 'axios';
 import { CartContext } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext';
 import ProductCard from '../components/ProductCard';
+import { toast } from 'react-toastify';
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -77,7 +78,7 @@ const ProductDetails = () => {
         }
         if (!product || outOfStock) return;
         addToCart(product, qty, selectedColor, selectedSize);
-        alert('Added to cart successfully!');
+        toast.success('Added to cart successfully!');
     };
 
     const currentSizeStock = product ? (product.sizes && product.sizes[selectedSize] !== undefined ? product.sizes[selectedSize] : product.quantity) : 0;

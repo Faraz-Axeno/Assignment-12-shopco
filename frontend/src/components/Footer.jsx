@@ -1,20 +1,26 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import emailjs from 'emailjs-com';
+import { toast } from 'react-toastify';
 
 const Footer = () => {
     const [email, setEmail] = useState('');
-    const [status, setStatus] = useState('');
 
     const handleSubscribe = (e) => {
         e.preventDefault();
         
-        if (!email) {
-            setStatus('Please enter an email address.');
+        if (!email || email.trim() === '') {
+            toast.error('Please enter an email address.');
             return;
         }
 
-        setStatus('Sending...');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            toast.error('Please provide a valid email address');
+            return;
+        }
+
+        toast.info('Sending...');
 
         // Using placeholder Service ID, Template ID, and Public Key. 
         // The user should replace these with their own EmailJS credentials.
@@ -31,12 +37,12 @@ const Footer = () => {
         emailjs.send(serviceID, templateID, templateParams, publicKey)
             .then((response) => {
                 console.log('SUCCESS!', response.status, response.text);
-                setStatus('Subscribed successfully!');
+                toast.success('Subscribed successfully!');
                 setEmail('');
             }, (error) => {
                 console.error('FAILED...', error);
                 // Simulate success for demonstration purposes if keys are invalid
-                setStatus('Subscribed successfully! (Mocked due to invalid keys)');
+                toast.success('Subscribed successfully! (Mocked)');
                 setEmail('');
             });
     };
@@ -45,11 +51,11 @@ const Footer = () => {
         <footer className="footer">
             <div className="newsletter">
                 <h2 className="newsletter__title">STAY UPTO DATE ABOUT OUR LATEST OFFERS</h2>
-                <form className="newsletter__form" onSubmit={handleSubscribe}>
+                <form className="newsletter__form" onSubmit={handleSubscribe} noValidate>
                     <div className="newsletter__input-group">
                         <img src="/images/email-icon.svg" alt="Email Icon" className="newsletter__icon" />
                         <input 
-                            type="email" 
+                            type="text" 
                             className="newsletter__input" 
                             placeholder="Enter your email address" 
                             value={email}

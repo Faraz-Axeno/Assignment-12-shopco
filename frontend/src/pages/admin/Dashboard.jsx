@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../../context/AuthContext';
 import { LayoutDashboard, ShoppingBag, Package, PlusCircle, Menu, X, Trash2 } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 const AdminDashboard = () => {
     const { user } = useContext(AuthContext);
@@ -38,6 +39,7 @@ const AdminDashboard = () => {
             setCategories(categoriesRes.data);
         } catch (error) {
             console.error(error);
+            toast.error('Failed to load dashboard data');
         }
     };
 
@@ -60,10 +62,11 @@ const AdminDashboard = () => {
             });
             setNewProduct(prev => ({ ...prev, image: data.url }));
             setUploading(false);
+            toast.success('Image uploaded successfully');
         } catch (error) {
             console.error(error);
             setUploading(false);
-            alert('Upload failed. Ensure Cloudinary is configured on backend.');
+            toast.error('Upload failed. Ensure Cloudinary is configured on backend.');
         }
     };
 
@@ -76,7 +79,7 @@ const AdminDashboard = () => {
                 price: Number(newProduct.price),
                 sizes: Object.fromEntries(Object.entries(newProduct.sizes).map(([k, v]) => [k, Number(v)]))
             }, config);
-            alert('Product added successfully!');
+            toast.success('Product added successfully!');
             fetchData();
             setNewProduct({
                 name: '', price: '', category: '', description: '', image: '',
@@ -86,29 +89,32 @@ const AdminDashboard = () => {
                 }
             });
         } catch (err) {
-            alert('Failed to add product');
+            toast.error(err.response?.data?.message || 'Failed to add product');
         }
     };
 
     const updateOrderStatus = async (id, status) => {
         try {
             await axios.put(`http://localhost:5000/api/orders/${id}/status`, { status }, config);
+            toast.success('Order status updated');
             fetchData();
         } catch (err) {
-            alert('Failed to update status');
+            toast.error(err.response?.data?.message || 'Failed to update status');
         }
     };
 
+    const [deleteConfirm, setDeleteConfirm] = useState({ isOpen: false, productId: null });
+
     const deleteProduct = async (id) => {
-        if(window.confirm('Are you sure you want to delete this product?')) {
-            try {
-                await axios.delete(`http://localhost:5000/api/products/${id}`, config);
-                fetchData();
-            } catch (err) {
-                alert('Failed to delete product');
-            }
+        try {
+            await axios.delete(`http://localhost:5000/api/products/${id}`, config);
+            fetchData();
+            toast.success('Product deleted successfully');
+        } catch (err) {
+            toast.error('Failed to delete product');
         }
-    }
+        setDeleteConfirm({ isOpen: false, productId: null });
+    };
 
     return (
         <div className="admin-dashboard">
@@ -200,7 +206,7 @@ const AdminDashboard = () => {
                                             </td>
                                             <td>{p.category?.name || 'Uncategorized'}</td>
                                             <td>
-                                                <button className="btn-icon delete-btn" onClick={() => deleteProduct(p._id)}>
+                                                <button className="btn-icon delete-btn" onClick={() => setDeleteConfirm({ isOpen: true, productId: p._id })}>
                                                     <Trash2 size={18} />
                                                 </button>
                                             </td>
@@ -263,15 +269,15 @@ const AdminDashboard = () => {
                 {activeTab === 'add-product' && (
                     <div className="fade-in form-wrapper">
                         <h2 className="section-header">Add New Product</h2>
-                        <form className="admin-form" onSubmit={handleAddProduct}>
+                        <form className="admin-form" onSubmit={handleAddProduct} noValidate>
                             <div className="form-group">
                                 <label>Name</label>
-                                <input type="text" required value={newProduct.name} onChange={e => setNewProduct({...newProduct, name: e.target.value})} />
+                                <input type="text" value={newProduct.name} onChange={e => setNewProduct({...newProduct, name: e.target.value})} />
                             </div>
                             <div className="form-group-row">
                                 <div className="form-group">
                                     <label>Price ($)</label>
-                                    <input type="number" min="0" step="0.01" required value={newProduct.price} onChange={e => setNewProduct({...newProduct, price: e.target.value})} />
+                                    <input type="number" step="0.01" value={newProduct.price} onChange={e => setNewProduct({...newProduct, price: e.target.value})} />
                                 </div>
                             </div>
                             <div className="form-group">
@@ -281,7 +287,7 @@ const AdminDashboard = () => {
                                         <div key={size} className="admin-size-item">
                                             <label className="admin-size-label">{size}</label>
                                             <input 
-                                                type="number" min="0" required 
+                                                type="number" 
                                                 value={newProduct.sizes[size]} 
                                                 onChange={e => setNewProduct({...newProduct, sizes: {...newProduct.sizes, [size]: e.target.value}})} 
                                                 className="admin-size-input"
@@ -292,14 +298,14 @@ const AdminDashboard = () => {
                             </div>
                             <div className="form-group">
                                 <label>Category</label>
-                                <select required value={newProduct.category} onChange={e => setNewProduct({...newProduct, category: e.target.value})}>
+                                <select value={newProduct.category} onChange={e => setNewProduct({...newProduct, category: e.target.value})}>
                                     <option value="">Select Category</option>
                                     {categories.map(c => <option key={c._id} value={c._id}>{c.name}</option>)}
                                 </select>
                             </div>
                             <div className="form-group">
                                 <label>Description</label>
-                                <textarea required rows="4" value={newProduct.description} onChange={e => setNewProduct({...newProduct, description: e.target.value})}></textarea>
+                                <textarea rows="4" value={newProduct.description} onChange={e => setNewProduct({...newProduct, description: e.target.value})}></textarea>
                             </div>
                             <div className="form-group">
                                 <label>Image (Upload via Cloudinary)</label>
@@ -313,6 +319,43 @@ const AdminDashboard = () => {
                             </div>
                             <button type="submit" className="btn-primary form-btn" disabled={uploading}>Add Product</button>
                         </form>
+                    </div>
+                )}
+
+                {deleteConfirm.isOpen && (
+                    <div style={{
+                        position: 'fixed',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        zIndex: 9999
+                    }}>
+                        <div style={{
+                            backgroundColor: '#fff',
+                            padding: '30px',
+                            borderRadius: '12px',
+                            width: '90%',
+                            maxWidth: '400px',
+                            boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
+                            color: '#000'
+                        }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                                <h3 style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>Confirm Delete</h3>
+                                <button onClick={() => setDeleteConfirm({ isOpen: false, productId: null })} style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', lineHeight: 1 }}>&times;</button>
+                            </div>
+                            <div style={{ fontSize: '16px', marginBottom: '24px', color: '#555' }}>
+                                Are you sure you want to delete this product? This action cannot be undone.
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+                                <button onClick={() => setDeleteConfirm({ isOpen: false, productId: null })} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid #ccc', background: '#fff', cursor: 'pointer', fontWeight: 'bold' }}>Cancel</button>
+                                <button onClick={() => deleteProduct(deleteConfirm.productId)} style={{ padding: '10px 20px', borderRadius: '8px', border: 'none', background: '#ff4d4f', color: '#fff', cursor: 'pointer', fontWeight: 'bold' }}>Delete</button>
+                            </div>
+                        </div>
                     </div>
                 )}
             </main>

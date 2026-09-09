@@ -1,11 +1,11 @@
 import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -15,7 +15,7 @@ const Login = () => {
             await login(email, password);
             navigate('/');
         } catch (err) {
-            setError(err.response?.data?.message || 'Invalid email or password');
+            toast.error(err.response?.data?.message || 'Invalid email or password');
         }
     };
 
@@ -26,17 +26,14 @@ const Login = () => {
                 <h2 className="login-subtitle">Log in to your account</h2>
                 <p className="login-desc">Enter your details to access your account</p>
 
-                {error && <div className="error-message" style={{color: 'red', marginBottom: '10px'}}>{error}</div>}
-
-                <form className="login-form" onSubmit={submitHandler}>
+                <form className="login-form" onSubmit={submitHandler} noValidate>
                     <div className="form-group">
                         <label htmlFor="email" className="form-label">Email</label>
                         <input 
-                            type="email" 
+                            type="text" 
                             id="email" 
                             className="form-input" 
                             placeholder="admin@example.com" 
-                            required 
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
@@ -48,7 +45,6 @@ const Login = () => {
                             id="password" 
                             className="form-input" 
                             placeholder="••••••••" 
-                            required 
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />

@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { Suspense, lazy, useContext } from 'react';
 import { AuthContext, AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -39,6 +41,7 @@ function App() {
             <CartProvider>
                 <Router>
                     <Header />
+                    <ToastContainer position="top-right" autoClose={3000} />
                     <main className="main-content">
                         <Suspense fallback={<div>Loading...</div>}>
                             <Routes>
