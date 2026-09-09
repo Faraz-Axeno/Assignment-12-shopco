@@ -49,6 +49,25 @@ const AdminDashboard = () => {
 
     const handleUpload = async (e) => {
         const file = e.target.files[0];
+        if (!file) return;
+
+        const ALLOWED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.webpg', '.heic', '.heif'];
+        const fileName = file.name.toLowerCase();
+        const isValidExtension = ALLOWED_EXTENSIONS.some(ext => fileName.endsWith(ext));
+        const MAX_SIZE = 5 * 1024 * 1024; // 5 MB
+
+        if (!isValidExtension) {
+            toast.error(`Invalid file type. Allowed: ${ALLOWED_EXTENSIONS.join(', ')}`);
+            e.target.value = '';
+            return;
+        }
+
+        if (file.size > MAX_SIZE) {
+            toast.error('File size exceeds 5MB limit.');
+            e.target.value = '';
+            return;
+        }
+
         const formData = new FormData();
         formData.append('image', file);
         setUploading(true);
@@ -309,7 +328,7 @@ const AdminDashboard = () => {
                             </div>
                             <div className="form-group">
                                 <label>Image (Upload via Cloudinary)</label>
-                                <input type="file" onChange={handleUpload} accept="image/*" />
+                                <input type="file" onChange={handleUpload} accept=".jpg,.jpeg,.png,.webp,.webpg,.heic,.heif" />
                                 {uploading && <p className="upload-text">Uploading image...</p>}
                                 {newProduct.image && (
                                     <div className="image-preview">

@@ -38,31 +38,3 @@ For testing and evaluation purposes, use the following credentials:
 * **Backend:** Node.js, Express.js, MongoDB, Mongoose, JWT, Bcrypt
 * **State Management:** React Context API (`AuthContext`, `CartContext`)
 
----
-
-## 🚀 Running the Project
-
-1. **Install Dependencies:**
-   - Backend: `cd backend && npm install`
-   - Frontend: `cd frontend && npm install`
-
-2. **Environment Variables:**
-   Create a `.env` file in the `backend/` directory:
-   ```env
-   PORT=5000
-   MONGO_URI=mongodb://127.0.0.1:27017/shopco
-   JWT_SECRET=supersecretjwtkey123
-   CLOUDINARY_CLOUD_NAME=your_cloud_name
-   CLOUDINARY_API_KEY=your_api_key
-   CLOUDINARY_API_SECRET=your_api_secret
-   ```
-
-3. **Seed the Database:**
-   ```bash
-   cd backend
-   npm run data:import
-   ```
-
-4. **Run the Application:**
-   - Backend: `cd backend && npm start`
-   - Frontend: `cd frontend && npm run dev`
