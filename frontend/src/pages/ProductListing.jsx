@@ -45,6 +45,9 @@ const ProductListing = () => {
         const queryParams = new URLSearchParams(location.search);
         const catName = queryParams.get('categoryName');
         const catId = queryParams.get('category');
+        const newKeyword = queryParams.get('keyword') || '';
+
+        setKeyword(newKeyword);
         
         if (catName && categories.length > 0) {
             const foundCat = categories.find(c => c.name.toLowerCase() === catName.toLowerCase());

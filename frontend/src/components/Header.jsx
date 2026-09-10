@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { CartContext } from '../context/CartContext';
@@ -10,10 +10,30 @@ const Header = () => {
     const [search, setSearch] = useState('');
     const [showBanner, setShowBanner] = useState(true);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const isFirstRender = useRef(true);
+
+    useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
+        }
+
+        const handler = setTimeout(() => {
+            const trimmedSearch = search.trim();
+            // Only navigate if there's a search term or if already on the products page clearing the search
+            if (trimmedSearch || window.location.pathname === '/products') {
+                navigate(`/products?keyword=${trimmedSearch}`);
+            }
+        }, 500);
+
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [search, navigate]);
 
     const handleSearch = (e) => {
         if (e.key === 'Enter') {
-            navigate(`/products?keyword=${search}`);
+            navigate(`/products?keyword=${search.trim()}`);
         }
     };
 
