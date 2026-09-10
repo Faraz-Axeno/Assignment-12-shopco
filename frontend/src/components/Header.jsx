@@ -47,10 +47,10 @@ const Header = () => {
 
                 {/* Mobile Menu Overlay */}
                 {mobileMenuOpen && (
-                    <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 9999 }}>
-                        <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: '250px', backgroundColor: '#fff', padding: '20px', boxShadow: '2px 0 10px rgba(0,0,0,0.1)' }}>
-                            <button onClick={() => setMobileMenuOpen(false)} style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', marginBottom: '20px' }}>&times;</button>
-                            <nav style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                    <div className="mobile-menu-overlay">
+                        <div className="mobile-menu-content">
+                            <button onClick={() => setMobileMenuOpen(false)} className="mobile-menu-close">&times;</button>
+                            <nav className="mobile-menu-nav">
                                 <Link to="/products" className="header__nav-link" onClick={() => setMobileMenuOpen(false)}>Shop</Link>
                                 <Link to="/products?category=on-sale" className="header__nav-link" onClick={() => setMobileMenuOpen(false)}>On Sale</Link>
                                 <Link to="/products?sort=newest" className="header__nav-link" onClick={() => setMobileMenuOpen(false)}>New Arrivals</Link>
@@ -83,36 +83,21 @@ const Header = () => {
                     <button className="header__action-btn header__action-btn--search-mobile" aria-label="Search">
                         <img src="/images/search.svg" alt="Search" className="header__action-search-icon" />
                     </button>
-                    <Link to="/cart" className="header__action-btn" aria-label="Cart" style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                    <Link to="/cart" className="header__action-btn cart-has-badge" aria-label="Cart">
                         <img src="/images/cart.svg" alt="Cart" className="header__action-cart-icon" />
                         {user && totalQty > 0 && (
-                            <span className="cart-badge" style={{ 
-                                position: 'absolute', 
-                                top: '-8px', 
-                                right: '-8px', 
-                                backgroundColor: '#000', 
-                                color: '#fff', 
-                                borderRadius: '50%', 
-                                minWidth: '16px',
-                                height: '16px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontSize: '10px', 
-                                fontWeight: 'bold',
-                                padding: '2px'
-                            }}>
+                            <span className="header__cart-badge">
                                 {totalQty}
                             </span>
                         )}
                     </Link>
                     {user ? (
-                        <div className="header__user-menu" style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div className="header__user-menu">
                             <Link to="/profile" className="header__action-btn">
                                 <img src="/images/profile.svg" alt="Profile" className="header__action-profile-icon" />
                             </Link>
-                            {user.isAdmin && <Link to="/admin" style={{fontSize: '14px', textDecoration: 'none'}}>Admin</Link>}
-                            <button onClick={handleLogout} style={{background: 'none', border: 'none', cursor: 'pointer', fontSize: '14px'}}>Logout</button>
+                            {user.isAdmin && <Link to="/admin" className="header__admin-link">Admin</Link>}
+                            <button onClick={handleLogout} className="header__logout-btn">Logout</button>
                         </div>
                     ) : (
                         <Link to="/login" className="header__action-btn" aria-label="Profile">

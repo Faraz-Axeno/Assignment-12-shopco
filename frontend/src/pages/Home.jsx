@@ -85,7 +85,7 @@ const Home = () => {
                         ))}
                     </div>
                     <div className="button-container">
-                        <Link to="/products?sort=newest"><button style={{ background: 'white', color: 'black', border: '1px solid #ddd', padding: '16px 54px', borderRadius: '62px', fontSize: '16px', fontWeight: '500', cursor: 'pointer', transition: 'all 0.2s' }}>View All</button></Link>
+                        <Link to="/products?sort=newest"><button className="view-all-btn">View All</button></Link>
                     </div>
                 </div>
             </section>
@@ -101,7 +101,7 @@ const Home = () => {
                         ))}
                     </div>
                     <div className="button-container">
-                        <Link to="/products"><button style={{ background: 'white', color: 'black', border: '1px solid #ddd', padding: '16px 54px', borderRadius: '62px', fontSize: '16px', fontWeight: '500', cursor: 'pointer', transition: 'all 0.2s' }}>View All</button></Link>
+                        <Link to="/products"><button className="view-all-btn">View All</button></Link>
                     </div>
                 </div>
             </section>
@@ -131,42 +131,42 @@ const Home = () => {
                     <div className="testimonials__header">
                         <h2 className="testimonials__title">OUR HAPPY CUSTOMERS</h2>
                         <div className="testimonials__nav">
-                            <button onClick={() => scrollTestimonials('left')} className="testimonials__arrow testimonials__arrow--prev" style={{ border: 'none', background: 'transparent', cursor: 'pointer' }}>
-                                <img src="/images/arrow-right.svg" style={{ transform: 'rotate(180deg)' }} alt="Previous" />
+                            <button onClick={() => scrollTestimonials('left')} className="testimonials__arrow testimonials__arrow--prev">
+                                <img src="/images/arrow-right.svg" alt="Previous" />
                             </button>
-                            <button onClick={() => scrollTestimonials('right')} className="testimonials__arrow testimonials__arrow--next" style={{ border: 'none', background: 'transparent', cursor: 'pointer' }}>
+                            <button onClick={() => scrollTestimonials('right')} className="testimonials__arrow testimonials__arrow--next">
                                 <img src="/images/arrow-right.svg" alt="Next" />
                             </button>
                         </div>
                     </div>
                     
                     <div className="testimonials__carousel">
-                        <div className="testimonials__grid" id="testimonials-grid" ref={testimonialsRef} style={{ display: 'flex', gap: '20px', overflowX: 'auto', paddingBottom: '20px', scrollBehavior: 'smooth' }}>
-                            <article className="review-card testimonials__card" style={{ minWidth: '350px', border: '1px solid #eee', padding: '28px', borderRadius: '20px' }}>
-                                <div className="review-card__stars" style={{ color: '#FFC633', fontSize: '22px', marginBottom: '15px' }}>★★★★★</div>
-                                <div className="review-card__user" style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '12px' }}>
-                                    <h4 className="review-card__name" style={{ margin: 0, fontSize: '20px' }}>Sarah M.</h4>
+                        <div className="testimonials__grid testimonials-grid-override" id="testimonials-grid" ref={testimonialsRef}>
+                            <article className="review-card testimonials__card review-card-override">
+                                <div className="review-card__stars review-card-stars-override">★★★★★</div>
+                                <div className="review-card__user review-card-user-override">
+                                    <h4 className="review-card__name review-card-name-override">Sarah M.</h4>
                                     <img src="/images/verified.svg" alt="Verified" className="review-card__verified-icon" />
                                 </div>
-                                <p className="review-card__text" style={{ margin: 0, color: '#666', lineHeight: '1.5' }}>"I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations."</p>
+                                <p className="review-card__text review-card-text-override">"I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations."</p>
                             </article>
 
-                            <article className="review-card testimonials__card" style={{ minWidth: '350px', border: '1px solid #eee', padding: '28px', borderRadius: '20px' }}>
-                                <div className="review-card__stars" style={{ color: '#FFC633', fontSize: '22px', marginBottom: '15px' }}>★★★★★</div>
-                                <div className="review-card__user" style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '12px' }}>
-                                    <h4 className="review-card__name" style={{ margin: 0, fontSize: '20px' }}>Alex K.</h4>
+                            <article className="review-card testimonials__card review-card-override">
+                                <div className="review-card__stars review-card-stars-override">★★★★★</div>
+                                <div className="review-card__user review-card-user-override">
+                                    <h4 className="review-card__name review-card-name-override">Alex K.</h4>
                                     <img src="/images/verified.svg" alt="Verified" className="review-card__verified-icon" />
                                 </div>
-                                <p className="review-card__text" style={{ margin: 0, color: '#666', lineHeight: '1.5' }}>"Finding clothes that align with my personal style used to be a challenge until I discovered Shop.co. The range of options they offer is truly remarkable, catering to a variety of tastes and occasions."</p>
+                                <p className="review-card__text review-card-text-override">"Finding clothes that align with my personal style used to be a challenge until I discovered Shop.co. The range of options they offer is truly remarkable, catering to a variety of tastes and occasions."</p>
                             </article>
 
-                            <article className="review-card testimonials__card" style={{ minWidth: '350px', border: '1px solid #eee', padding: '28px', borderRadius: '20px' }}>
-                                <div className="review-card__stars" style={{ color: '#FFC633', fontSize: '22px', marginBottom: '15px' }}>★★★★★</div>
-                                <div className="review-card__user" style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '12px' }}>
-                                    <h4 className="review-card__name" style={{ margin: 0, fontSize: '20px' }}>James L.</h4>
+                            <article className="review-card testimonials__card review-card-override">
+                                <div className="review-card__stars review-card-stars-override">★★★★★</div>
+                                <div className="review-card__user review-card-user-override">
+                                    <h4 className="review-card__name review-card-name-override">James L.</h4>
                                     <img src="/images/verified.svg" alt="Verified" className="review-card__verified-icon" />
                                 </div>
-                                <p className="review-card__text" style={{ margin: 0, color: '#666', lineHeight: '1.5' }}>"As someone who's always on the lookout for unique fashion pieces, I'm thrilled to have stumbled upon Shop.co. The selection of clothes is not only diverse but also on-point with the latest trends."</p>
+                                <p className="review-card__text review-card-text-override">"As someone who's always on the lookout for unique fashion pieces, I'm thrilled to have stumbled upon Shop.co. The selection of clothes is not only diverse but also on-point with the latest trends."</p>
                             </article>
                         </div>
                     </div>

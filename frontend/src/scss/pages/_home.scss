@@ -806,3 +806,62 @@ html, body {
         }
     }
 }
+
+.view-all-btn {
+    background: white;
+    color: black;
+    border: 1px solid #ddd;
+    padding: 16px 54px;
+    border-radius: 62px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+        background: #f0f0f0;
+    }
+}
+
+.testimonials__arrow--prev img {
+    transform: rotate(180deg);
+}
+
+.testimonials-grid-override {
+    display: flex !important;
+    gap: 20px !important;
+    overflow-x: auto !important;
+    padding-bottom: 20px !important;
+    scroll-behavior: smooth !important;
+}
+
+.review-card-override {
+    min-width: 350px !important;
+    border: 1px solid #eee !important;
+    padding: 28px !important;
+    border-radius: 20px !important;
+}
+
+.review-card-stars-override {
+    color: #FFC633 !important;
+    font-size: 22px !important;
+    margin-bottom: 15px !important;
+}
+
+.review-card-user-override {
+    display: flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    margin-bottom: 12px !important;
+}
+
+.review-card-name-override {
+    margin: 0 !important;
+    font-size: 20px !important;
+}
+
+.review-card-text-override {
+    margin: 0 !important;
+    color: #666 !important;
+    line-height: 1.5 !important;
+}

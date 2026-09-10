@@ -328,10 +328,10 @@ const AdminDashboard = () => {
                             </div>
                             <div className="form-group">
                                 <label>Image (Upload via Cloudinary)</label>
-                                <span style={{ fontSize: '12px', color: '#666', marginBottom: '8px', display: 'block' }}>
+                                <span className="admin-upload-info">
                                     Allowed: JPG, PNG, WEBP, HEIC (Max 5MB)
                                 </span>
-                                <input type="file" onChange={handleUpload} accept=".jpg,.jpeg,.png,.webp,.webpg,.heic,.heif" style={{ cursor: 'pointer' }} />
+                                <input type="file" onChange={handleUpload} accept=".jpg,.jpeg,.png,.webp,.webpg,.heic,.heif" className="admin-file-input" />
                                 {uploading && <p className="upload-text">Uploading image...</p>}
                                 {newProduct.image && (
                                     <div className="image-preview">
@@ -345,37 +345,18 @@ const AdminDashboard = () => {
                 )}
 
                 {deleteConfirm.isOpen && (
-                    <div style={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        zIndex: 9999
-                    }}>
-                        <div style={{
-                            backgroundColor: '#fff',
-                            padding: '30px',
-                            borderRadius: '12px',
-                            width: '90%',
-                            maxWidth: '400px',
-                            boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
-                            color: '#000'
-                        }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                                <h3 style={{ fontSize: '20px', fontWeight: 'bold', margin: 0 }}>Confirm Delete</h3>
-                                <button onClick={() => setDeleteConfirm({ isOpen: false, productId: null })} style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', lineHeight: 1 }}>&times;</button>
+                    <div className="admin-modal-overlay">
+                        <div className="admin-modal-content">
+                            <div className="admin-modal-header">
+                                <h3 className="admin-modal-title">Confirm Delete</h3>
+                                <button onClick={() => setDeleteConfirm({ isOpen: false, productId: null })} className="admin-modal-close-btn">&times;</button>
                             </div>
-                            <div style={{ fontSize: '16px', marginBottom: '24px', color: '#555' }}>
+                            <div className="admin-modal-text">
                                 Are you sure you want to delete this product? This action cannot be undone.
                             </div>
-                            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
-                                <button onClick={() => setDeleteConfirm({ isOpen: false, productId: null })} style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid #ccc', background: '#fff', cursor: 'pointer', fontWeight: 'bold' }}>Cancel</button>
-                                <button onClick={() => deleteProduct(deleteConfirm.productId)} style={{ padding: '10px 20px', borderRadius: '8px', border: 'none', background: '#ff4d4f', color: '#fff', cursor: 'pointer', fontWeight: 'bold' }}>Delete</button>
+                            <div className="admin-modal-actions">
+                                <button onClick={() => setDeleteConfirm({ isOpen: false, productId: null })} className="admin-modal-btn-cancel">Cancel</button>
+                                <button onClick={() => deleteProduct(deleteConfirm.productId)} className="admin-modal-btn-delete">Delete</button>
                             </div>
                         </div>
                     </div>

@@ -60,9 +60,9 @@ const Cart = () => {
 
     if (cartItems.length === 0 && !showModal) {
         return (
-            <div style={{ textAlign: 'center', padding: '100px 20px', fontFamily: 'Satoshi, sans-serif' }}>
+            <div className="cart-empty-container">
                 <h2>Your cart is empty</h2>
-                <Link to="/products" style={{ display: 'inline-block', marginTop: '20px', padding: '15px 30px', background: '#000', color: '#fff', borderRadius: '30px', textDecoration: 'none' }}>Go Shopping</Link>
+                <Link to="/products" className="cart-shop-link">Go Shopping</Link>
             </div>
         );
     }
@@ -89,7 +89,7 @@ const Cart = () => {
                                             </div>
                                             <div className="cart-item__info">
                                                 <div className="cart-item__header">
-                                                    <h3 className="cart-item__title"><Link to={`/product/${item.product}`} style={{ textDecoration: 'none', color: 'inherit' }}>{item.name}</Link></h3>
+                                                    <h3 className="cart-item__title"><Link to={`/product/${item.product}`} className="cart-item-link-override">{item.name}</Link></h3>
                                                     <button className="cart-item__delete-btn" aria-label="Remove item" onClick={() => removeFromCart(item.product)}>
                                                         <img src="/images/Delete-Dustbin.svg" alt="Delete" className="cart-item__delete-icon" />
                                                     </button>
@@ -145,7 +145,7 @@ const Cart = () => {
                                 <button className="promo-code__btn" onClick={handleApplyCoupon}>Apply</button>
                             </div>
                             
-                            {couponError && <div className="promo-code__message" style={{ color: 'red' }}>{couponError}</div>}
+                            {couponError && <div className="promo-code__message promo-error-msg">{couponError}</div>}
 
                             <button className="checkout-btn" onClick={handleCheckout}>
                                 Go to Checkout <img src="/images/arrow-right.svg" alt="Checkout" className="checkout-btn__icon" />
@@ -156,45 +156,17 @@ const Cart = () => {
             </section>
 
             {showModal && (
-                <div style={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    zIndex: 1000
-                }}>
-                    <div style={{
-                        background: '#fff',
-                        padding: '40px',
-                        borderRadius: '20px',
-                        textAlign: 'center',
-                        maxWidth: '400px',
-                        width: '90%',
-                        boxShadow: '0 10px 30px rgba(0,0,0,0.2)'
-                    }}>
-                        <div style={{ fontSize: '48px', marginBottom: '20px' }}>&#127881;</div>
-                        <h2 style={{ fontSize: '24px', fontWeight: '900', marginBottom: '10px' }}>THANK YOU!</h2>
-                        <p style={{ color: '#666', marginBottom: '30px' }}>Your order has been placed successfully. Thank you for shopping with SHOP.CO!</p>
+                <div className="checkout-modal-overlay">
+                    <div className="checkout-modal-content">
+                        <div className="checkout-modal-icon">&#127881;</div>
+                        <h2 className="checkout-modal-title">THANK YOU!</h2>
+                        <p className="checkout-modal-text">Your order has been placed successfully. Thank you for shopping with SHOP.CO!</p>
                         <button 
                             onClick={() => {
                                 setShowModal(false);
                                 navigate('/profile');
                             }}
-                            style={{
-                                width: '100%',
-                                padding: '15px',
-                                background: '#000',
-                                color: '#fff',
-                                border: 'none',
-                                borderRadius: '30px',
-                                fontWeight: 'bold',
-                                cursor: 'pointer'
-                            }}
+                            className="checkout-modal-btn"
                         >
                             View Order Details
                         </button>
@@ -203,16 +175,7 @@ const Cart = () => {
                                 setShowModal(false);
                                 navigate('/');
                             }}
-                            style={{
-                                width: '100%',
-                                padding: '15px',
-                                background: 'transparent',
-                                color: '#000',
-                                border: 'none',
-                                marginTop: '10px',
-                                fontWeight: 'bold',
-                                cursor: 'pointer'
-                            }}
+                            className="checkout-modal-btn-outline"
                         >
                             Continue Shopping
                         </button>

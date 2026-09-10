@@ -23,29 +23,17 @@ const Categories = () => {
     if (loading) return <div>Loading...</div>;
 
     return (
-        <div style={{ maxWidth: '1200px', margin: '40px auto', padding: '0 20px' }}>
-            <h1 style={{ marginBottom: '30px', textAlign: 'center' }}>Shop by Category</h1>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '30px' }}>
+        <div className="categories-page">
+            <h1 className="categories-title">Shop by Category</h1>
+            <div className="categories-grid">
                 {categories.map(category => (
                     <Link 
                         key={category._id} 
                         to={`/products?category=${category._id}`}
-                        style={{
-                            display: 'block',
-                            padding: '40px 20px',
-                            background: '#f8f9fa',
-                            border: '1px solid #e9ecef',
-                            borderRadius: '10px',
-                            textAlign: 'center',
-                            textDecoration: 'none',
-                            color: '#000',
-                            transition: 'transform 0.2s',
-                        }}
-                        onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-                        onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                        className="category-card"
                     >
-                        <h2 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>{category.name}</h2>
-                        <p style={{ color: '#6c757d' }}>{category.description}</p>
+                        <h2 className="category-card-title">{category.name}</h2>
+                        <p className="category-card-desc">{category.description}</p>
                     </Link>
                 ))}
             </div>

@@ -9,6 +9,9 @@ const Profile = () => {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    const [cancelModalOpen, setCancelModalOpen] = useState(false);
+    const [orderToCancel, setOrderToCancel] = useState(null);
+
     const [name, setName] = useState(user?.name || '');
     const [email, setEmail] = useState(user?.email || '');
     const [phone, setPhone] = useState('');
@@ -33,16 +36,25 @@ const Profile = () => {
         fetchProfileData();
     }, [user?._id]);
 
-    const handleCancelOrder = async (orderId) => {
-        if (!window.confirm('Are you sure you want to cancel this order?')) return;
+    const handleCancelOrderClick = (orderId) => {
+        setOrderToCancel(orderId);
+        setCancelModalOpen(true);
+    };
+
+    const confirmCancelOrder = async () => {
+        if (!orderToCancel) return;
         try {
             const config = { headers: { Authorization: `Bearer ${user?._id}` } };
-            await axios.put(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/orders/${orderId}/cancel`, {}, config);
-            setOrders(orders.map(o => o._id === orderId ? { ...o, status: 'Cancelled' } : o));
+            await axios.put(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/orders/${orderToCancel}/cancel`, {}, config);
+            setOrders(orders.map(o => o._id === orderToCancel ? { ...o, status: 'Cancelled' } : o));
             toast.success('Order cancelled successfully');
+            setCancelModalOpen(false);
+            setOrderToCancel(null);
         } catch (error) {
             console.error(error);
             toast.error(error.response?.data?.message || 'Failed to cancel order');
+            setCancelModalOpen(false);
+            setOrderToCancel(null);
         }
     };
 
@@ -126,7 +138,7 @@ const Profile = () => {
                                     </span>
                                     {(order.status === 'Pending' || order.status === 'Processing') && (
                                         <button 
-                                            onClick={() => handleCancelOrder(order._id)}
+                                            onClick={() => handleCancelOrderClick(order._id)}
                                             className="btn-cancel-order"
                                         >
                                             Cancel Order
@@ -150,6 +162,21 @@ const Profile = () => {
                     </div>
                 )}
             </div>
+            {cancelModalOpen && (
+                <div className="profile-modal-overlay">
+                    <div className="profile-modal-content">
+                        <div className="profile-modal-header">
+                            <h3 className="profile-modal-title">Cancel Order</h3>
+                            <button className="profile-modal-close-btn" onClick={() => setCancelModalOpen(false)}>&times;</button>
+                        </div>
+                        <p className="profile-modal-text">Are you sure you want to cancel this order?</p>
+                        <div className="profile-modal-actions">
+                            <button className="profile-modal-btn-cancel" onClick={() => setCancelModalOpen(false)}>No, Keep it</button>
+                            <button className="profile-modal-btn-confirm" onClick={confirmCancelOrder}>Yes, Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
