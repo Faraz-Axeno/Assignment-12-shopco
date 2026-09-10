@@ -93,7 +93,7 @@ const ProductListing = () => {
     }, [page, sort, keyword, category, minPrice, maxPrice, inStock]);
 
     useEffect(() => {
-        // Debounce search/filter changes
+        
         const timer = setTimeout(() => {
             fetchProducts();
         }, 300);

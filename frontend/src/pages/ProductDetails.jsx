@@ -83,7 +83,6 @@ const ProductDetails = () => {
 
     const currentSizeStock = product ? (product.sizes && product.sizes[selectedSize] !== undefined ? product.sizes[selectedSize] : product.quantity) : 0;
 
-    // Reset qty if current size stock is less than selected qty
     useEffect(() => {
         if (product && qty > currentSizeStock) {
             setQty(Math.max(1, currentSizeStock));

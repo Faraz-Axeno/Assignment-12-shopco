@@ -1,9 +1,6 @@
 const User = require('../models/userModel');
 const generateToken = require('../utils/generateToken');
 
-// @desc    Auth user & get token
-// @route   POST /api/users/login
-// @access  Public
 const authUser = async (req, res, next) => {
     try {
         const { email, password } = req.body;

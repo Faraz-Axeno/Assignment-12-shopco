@@ -14,8 +14,6 @@ const Signup = () => {
     const submitHandler = async (e) => {
         e.preventDefault();
         
-        // We still keep the password match check on the frontend 
-        // since it's just checking two form fields against each other.
         if (password !== confirmPassword) {
             toast.error('Passwords do not match');
             return;

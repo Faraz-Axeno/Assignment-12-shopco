@@ -11,7 +11,7 @@ export const CartProvider = ({ children }) => {
     const isFirstRender = useRef(true);
 
     useEffect(() => {
-        // Clean up legacy localStorage cart to prevent confusion
+
         localStorage.removeItem('cartItems');
         
         if (user) {

@@ -26,7 +26,6 @@ const addOrderItems = async (req, res, next) => {
                     throw new Error(`Insufficient inventory for product: ${product.name} (Size: ${item.size})`);
                 }
 
-                // Use backend price
                 const itemPrice = product.price;
                 subtotal += itemPrice * item.qty;
 
