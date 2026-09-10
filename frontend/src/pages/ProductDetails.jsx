@@ -11,7 +11,7 @@ const ProductDetails = () => {
     const navigate = useNavigate();
     const { addToCart } = useContext(CartContext);
     const { user } = useContext(AuthContext);
-    
+
     const [product, setProduct] = useState(null);
     const [qty, setQty] = useState(1);
     const [loading, setLoading] = useState(true);
@@ -53,13 +53,13 @@ const ProductDetails = () => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const { data } = await axios.get(`http://localhost:5000/api/products/${id}`);
+                const { data } = await axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/products/${id}`);
                 setProduct(data);
-                
+
                 // Fetch related products
                 const categoryId = data.category ? (data.category._id || data.category) : '';
                 if (categoryId) {
-                    const { data: relatedData } = await axios.get(`http://localhost:5000/api/products?category=${categoryId}&pageSize=5`);
+                    const { data: relatedData } = await axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/products?category=${categoryId}&pageSize=5`);
                     setRelatedProducts(relatedData.products.filter(p => p._id !== data._id).slice(0, 4));
                 }
             } catch (error) {
@@ -82,7 +82,7 @@ const ProductDetails = () => {
     };
 
     const currentSizeStock = product ? (product.sizes && product.sizes[selectedSize] !== undefined ? product.sizes[selectedSize] : product.quantity) : 0;
-    
+
     // Reset qty if current size stock is less than selected qty
     useEffect(() => {
         if (product && qty > currentSizeStock) {
@@ -103,31 +103,31 @@ const ProductDetails = () => {
 
             <section className="product">
                 <div className="product__container">
-                      <div className="product__gallery">
-                          <div className="product__thumbnails">
-                              {(product.images?.length > 1 ? product.images : [product.images[0], product.images[0], product.images[0]]).slice(0, 3).map((img, idx) => (
-                                  <button 
-                                      key={idx} 
-                                      className={`product__thumbnail-btn pd-thumbnail-btn ${selectedImageIndex === idx ? 'active' : ''}`}
-                                      onClick={() => setSelectedImageIndex(idx)}
-                                  >
-                                      <img src={img} alt={`${product.name} view ${idx + 1}`} className="product__thumbnail-img pd-contain-img" />
-                                  </button>
-                              ))}
-                          </div>
-                          
-                          <div className="product__main-image pd-transparent-bg">
-                              <img 
-                                  src={(product.images?.length > 1 ? product.images : [product.images[0], product.images[0], product.images[0]])[selectedImageIndex] || product.images[0]} 
-                                  alt={product.name} 
-                                  className="product__main-img pd-contain-img" 
-                              />
-                          </div>
-                      </div>
+                    <div className="product__gallery">
+                        <div className="product__thumbnails">
+                            {(product.images?.length > 1 ? product.images : [product.images[0], product.images[0], product.images[0]]).slice(0, 3).map((img, idx) => (
+                                <button
+                                    key={idx}
+                                    className={`product__thumbnail-btn pd-thumbnail-btn ${selectedImageIndex === idx ? 'active' : ''}`}
+                                    onClick={() => setSelectedImageIndex(idx)}
+                                >
+                                    <img src={img} alt={`${product.name} view ${idx + 1}`} className="product__thumbnail-img pd-contain-img" />
+                                </button>
+                            ))}
+                        </div>
+
+                        <div className="product__main-image pd-transparent-bg">
+                            <img
+                                src={(product.images?.length > 1 ? product.images : [product.images[0], product.images[0], product.images[0]])[selectedImageIndex] || product.images[0]}
+                                alt={product.name}
+                                className="product__main-img pd-contain-img"
+                            />
+                        </div>
+                    </div>
 
                     <div className="product__info">
                         <h1 className="product__title pd-title-normal">{product.name}</h1>
-                        
+
                         <div className="product__rating">
                             <span className="stars">
                                 {renderStars(product.rating || 4.5)}
@@ -164,9 +164,9 @@ const ProductDetails = () => {
                             <p className="product__option-label">Choose Size</p>
                             <div className="product__size-list">
                                 {['Small', 'Medium', 'Large', 'X-Large'].map(size => (
-                                    <button 
+                                    <button
                                         key={size}
-                                        className={`product__size-btn ${selectedSize === size ? 'product__size-btn--active' : ''}`} 
+                                        className={`product__size-btn ${selectedSize === size ? 'product__size-btn--active' : ''}`}
                                         onClick={() => setSelectedSize(size)}
                                     >
                                         {size}
@@ -183,7 +183,7 @@ const ProductDetails = () => {
                                 <input type="number" className="quantity__input" value={qty} readOnly aria-label="Product quantity" />
                                 <button className="quantity__btn quantity__btn--plus" aria-label="Increase quantity" onClick={() => setQty((prev) => Math.min(currentSizeStock, prev + 1))} disabled={outOfStock}>+</button>
                             </div>
-                            
+
                             <button className="product__add-to-cart" onClick={handleAddToCart} disabled={outOfStock}>{outOfStock ? 'Out of Stock' : 'Add to Cart'}</button>
                         </div>
                     </div>
@@ -207,12 +207,12 @@ const ProductDetails = () => {
                             <h3 className="reviews__title">All Reviews</h3>
                             <span className="reviews__count">({product.reviews ? product.reviews.length : 0})</span>
                         </div>
-                        
+
                         <div className="reviews__actions">
                             <button className="reviews__btn reviews__btn--icon" aria-label="Filter reviews">
                                 <img src="/images/filter.svg" alt="Filter" />
                             </button>
-                            
+
                             <div className="reviews__select-wrapper">
                                 <select className="reviews__select" aria-label="Sort reviews">
                                     <option value="latest">Latest</option>
@@ -220,7 +220,7 @@ const ProductDetails = () => {
                                     <option value="lowest">Lowest Rating</option>
                                 </select>
                             </div>
-                            
+
                             <button className="reviews__btn reviews__btn--primary">Write a Review</button>
                         </div>
                     </div>
@@ -244,7 +244,7 @@ const ProductDetails = () => {
                         )) : <p>No reviews yet.</p>}
                     </div>
 
-                      <div className="pd-load-more-container">
+                    <div className="pd-load-more-container">
                         <button className="reviews__btn pd-load-more-btn">Load More Reviews</button>
                     </div>
                 </div>

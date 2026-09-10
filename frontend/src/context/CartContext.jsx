@@ -19,7 +19,7 @@ export const CartProvider = ({ children }) => {
             const fetchCart = async () => {
                 try {
                     const config = { headers: { Authorization: `Bearer ${user.token}` } };
-                    const { data } = await axios.get('http://localhost:5000/api/cart', config);
+                    const { data } = await axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/cart`, config);
                     setCartItems(data.cartItems || []);
                 } catch (error) {
                     console.error('Failed to fetch cart', error);
@@ -40,7 +40,7 @@ export const CartProvider = ({ children }) => {
             const syncCart = async () => {
                 try {
                     const config = { headers: { Authorization: `Bearer ${user.token}` } };
-                    await axios.put('http://localhost:5000/api/cart', { cartItems }, config);
+                    await axios.put(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/cart`, { cartItems }, config);
                 } catch (error) {
                     console.error('Failed to sync cart', error);
                 }

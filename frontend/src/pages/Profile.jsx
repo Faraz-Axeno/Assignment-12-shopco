@@ -18,11 +18,11 @@ const Profile = () => {
         const fetchProfileData = async () => {
             try {
                 const config = { headers: { Authorization: `Bearer ${user?._id}` } };
-                const { data: profile } = await axios.get('http://localhost:5000/api/users/profile', config);
+                const { data: profile } = await axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/users/profile`, config);
                 setPhone(profile.phone || '');
                 setAddress(profile.address || '');
 
-                const { data: userOrders } = await axios.get('http://localhost:5000/api/orders/mine', config);
+                const { data: userOrders } = await axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/orders/mine`, config);
                 setOrders(userOrders);
             } catch (error) {
                 console.error(error);
@@ -37,7 +37,7 @@ const Profile = () => {
         if (!window.confirm('Are you sure you want to cancel this order?')) return;
         try {
             const config = { headers: { Authorization: `Bearer ${user?._id}` } };
-            await axios.put(`http://localhost:5000/api/orders/${orderId}/cancel`, {}, config);
+            await axios.put(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/orders/${orderId}/cancel`, {}, config);
             setOrders(orders.map(o => o._id === orderId ? { ...o, status: 'Cancelled' } : o));
             toast.success('Order cancelled successfully');
         } catch (error) {
@@ -50,7 +50,7 @@ const Profile = () => {
         e.preventDefault();
         try {
             const config = { headers: { Authorization: `Bearer ${user?._id}` } };
-            await axios.put('http://localhost:5000/api/users/profile', { name, email, phone, address }, config);
+            await axios.put(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/users/profile`, { name, email, phone, address }, config);
             toast.success('Profile updated successfully');
         } catch (error) {
             toast.error(error.response?.data?.message || 'Error updating profile');

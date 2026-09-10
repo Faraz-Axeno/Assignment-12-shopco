@@ -19,10 +19,10 @@ const Home = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const { data: newArrivalsData } = await axios.get('http://localhost:5000/api/products?sort=newest&pageSize=4');
+                const { data: newArrivalsData } = await axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/products?sort=newest&pageSize=4`);
                 setNewArrivals(newArrivalsData.products);
                 
-                const { data: topSellingData } = await axios.get('http://localhost:5000/api/products?sort=price_desc&pageSize=4'); // Proxy for top selling
+                const { data: topSellingData } = await axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/products?sort=price_desc&pageSize=4`); // Proxy for top selling
                 setTopSelling(topSellingData.products);
             } catch (error) {
                 console.error(error);

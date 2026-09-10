@@ -35,7 +35,7 @@ const ProductListing = () => {
     const location = useLocation();
     useEffect(() => {
         const fetchCategories = async () => {
-            const { data } = await axios.get('http://localhost:5000/api/categories');
+            const { data } = await axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/categories`);
             setCategories(data);
         };
         fetchCategories();
@@ -75,7 +75,7 @@ const ProductListing = () => {
     const fetchProducts = useCallback(async () => {
         setLoading(true);
         try {
-            let url = `http://localhost:5000/api/products?pageNumber=${page}&sort=${sort}`;
+            let url = `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/products?pageNumber=${page}&sort=${sort}`;
             if (keyword) url += `&keyword=${keyword}`;
             if (category) url += `&category=${category}`;
             if (minPrice) url += `&minPrice=${minPrice}`;

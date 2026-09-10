@@ -49,7 +49,7 @@ const Cart = () => {
                 discountAmount: cartTotals.discountAmount
             };
 
-            await axios.post('http://localhost:5000/api/orders', orderData, config);
+            await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/orders`, orderData, config);
             clearCart();
             toast.success('Order placed successfully!');
             setShowModal(true);

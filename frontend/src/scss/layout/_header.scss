@@ -91,6 +91,7 @@
     padding: 0;
     width: rem(32);
     height: rem(32);
+    flex-shrink: 0;
 
     .header__hamburger-icon {
         width: 100%;

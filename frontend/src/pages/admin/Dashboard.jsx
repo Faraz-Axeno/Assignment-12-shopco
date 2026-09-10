@@ -28,10 +28,10 @@ const AdminDashboard = () => {
     const fetchData = async () => {
         try {
             const [statsRes, productsRes, ordersRes, categoriesRes] = await Promise.all([
-                axios.get('http://localhost:5000/api/orders/stats', config),
-                axios.get('http://localhost:5000/api/products?pageSize=100', config),
-                axios.get('http://localhost:5000/api/orders', config),
-                axios.get('http://localhost:5000/api/categories')
+                axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/orders/stats`, config),
+                axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/products?pageSize=100`, config),
+                axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/orders`, config),
+                axios.get(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/categories`)
             ]);
             setStats(statsRes.data);
             setProducts(productsRes.data.products);
@@ -73,7 +73,7 @@ const AdminDashboard = () => {
         setUploading(true);
 
         try {
-            const { data } = await axios.post('http://localhost:5000/api/upload', formData, {
+            const { data } = await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/upload`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${user.token}`
@@ -92,7 +92,7 @@ const AdminDashboard = () => {
     const handleAddProduct = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5000/api/products', {
+            await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/products`, {
                 ...newProduct,
                 images: [newProduct.image || '/images/sample.jpg'], // fallback
                 price: Number(newProduct.price),
@@ -114,7 +114,7 @@ const AdminDashboard = () => {
 
     const updateOrderStatus = async (id, status) => {
         try {
-            await axios.put(`http://localhost:5000/api/orders/${id}/status`, { status }, config);
+            await axios.put(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/orders/${id}/status`, { status }, config);
             toast.success('Order status updated');
             fetchData();
         } catch (err) {
@@ -126,7 +126,7 @@ const AdminDashboard = () => {
 
     const deleteProduct = async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/api/products/${id}`, config);
+            await axios.delete(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/products/${id}`, config);
             fetchData();
             toast.success('Product deleted successfully');
         } catch (err) {
@@ -328,7 +328,10 @@ const AdminDashboard = () => {
                             </div>
                             <div className="form-group">
                                 <label>Image (Upload via Cloudinary)</label>
-                                <input type="file" onChange={handleUpload} accept=".jpg,.jpeg,.png,.webp,.webpg,.heic,.heif" />
+                                <span style={{ fontSize: '12px', color: '#666', marginBottom: '8px', display: 'block' }}>
+                                    Allowed: JPG, PNG, WEBP, HEIC (Max 5MB)
+                                </span>
+                                <input type="file" onChange={handleUpload} accept=".jpg,.jpeg,.png,.webp,.webpg,.heic,.heif" style={{ cursor: 'pointer' }} />
                                 {uploading && <p className="upload-text">Uploading image...</p>}
                                 {newProduct.image && (
                                     <div className="image-preview">
