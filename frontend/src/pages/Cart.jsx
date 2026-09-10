@@ -11,6 +11,8 @@ const Cart = () => {
     const [couponCode, setCouponCode] = useState('');
     const [couponError, setCouponError] = useState('');
     const [showModal, setShowModal] = useState(false);
+    const [address, setAddress] = useState('');
+    const [orderPlaced, setOrderPlaced] = useState(false);
     const navigate = useNavigate();
 
     const handleApplyCoupon = () => {
@@ -26,7 +28,11 @@ const Cart = () => {
         }
     };
 
-    const handleCheckout = async () => {
+    const submitOrder = async () => {
+        if (!address.trim()) {
+            toast.error('Please enter your address');
+            return;
+        }
         try {
             const config = {
                 headers: {
@@ -41,10 +47,10 @@ const Cart = () => {
                     size: item.size
                 })),
                 shippingAddress: {
-                    address: '123 Main St',
-                    city: 'New York',
-                    postalCode: '10001',
-                    country: 'USA'
+                    address: address,
+                    city: 'Not Specified',
+                    postalCode: '00000',
+                    country: 'Not Specified'
                 },
                 discountAmount: cartTotals.discountAmount
             };
@@ -52,7 +58,7 @@ const Cart = () => {
             await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/orders`, orderData, config);
             clearCart();
             toast.success('Order placed successfully!');
-            setShowModal(true);
+            setOrderPlaced(true);
         } catch (error) {
             toast.error(error.response?.data?.message || 'Checkout failed');
         }
@@ -147,7 +153,7 @@ const Cart = () => {
                             
                             {couponError && <div className="promo-code__message promo-error-msg">{couponError}</div>}
 
-                            <button className="checkout-btn" onClick={handleCheckout}>
+                            <button className="checkout-btn" onClick={() => setShowModal(true)}>
                                 Go to Checkout <img src="/images/arrow-right.svg" alt="Checkout" className="checkout-btn__icon" />
                             </button>
                         </aside>
@@ -158,27 +164,57 @@ const Cart = () => {
             {showModal && (
                 <div className="checkout-modal-overlay">
                     <div className="checkout-modal-content">
-                        <div className="checkout-modal-icon">&#127881;</div>
-                        <h2 className="checkout-modal-title">THANK YOU!</h2>
-                        <p className="checkout-modal-text">Your order has been placed successfully. Thank you for shopping with SHOP.CO!</p>
-                        <button 
-                            onClick={() => {
-                                setShowModal(false);
-                                navigate('/profile');
-                            }}
-                            className="checkout-modal-btn"
-                        >
-                            View Order Details
-                        </button>
-                        <button 
-                            onClick={() => {
-                                setShowModal(false);
-                                navigate('/');
-                            }}
-                            className="checkout-modal-btn-outline"
-                        >
-                            Continue Shopping
-                        </button>
+                        {!orderPlaced ? (
+                            <>
+                                <h2 className="checkout-modal-title">Checkout</h2>
+                                <p className="checkout-modal-text" style={{marginBottom: '10px'}}>Please enter your shipping address to proceed:</p>
+                                <textarea 
+                                    value={address} 
+                                    onChange={(e) => setAddress(e.target.value)} 
+                                    placeholder="Enter full shipping address..." 
+                                    style={{width: '100%', minHeight: '80px', marginBottom: '20px', padding: '12px', borderRadius: '8px', border: '1px solid #ccc', fontFamily: 'inherit', resize: 'none'}}
+                                />
+                                <button 
+                                    onClick={submitOrder}
+                                    className="checkout-modal-btn"
+                                    disabled={!address.trim()}
+                                >
+                                    Place Order
+                                </button>
+                                <button 
+                                    onClick={() => setShowModal(false)}
+                                    className="checkout-modal-btn-outline"
+                                    style={{marginTop: '10px'}}
+                                >
+                                    Cancel
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <div className="checkout-modal-icon">&#127881;</div>
+                                <h2 className="checkout-modal-title">THANK YOU!</h2>
+                                <p className="checkout-modal-text">Your order has been placed successfully. Thank you for shopping with SHOP.CO!</p>
+                                <button 
+                                    onClick={() => {
+                                        setShowModal(false);
+                                        navigate('/profile');
+                                    }}
+                                    className="checkout-modal-btn"
+                                >
+                                    View Order Details
+                                </button>
+                                <button 
+                                    onClick={() => {
+                                        setShowModal(false);
+                                        navigate('/');
+                                    }}
+                                    className="checkout-modal-btn-outline"
+                                    style={{marginTop: '10px'}}
+                                >
+                                    Continue Shopping
+                                </button>
+                            </>
+                        )}
                     </div>
                 </div>
             )}
