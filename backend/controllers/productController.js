@@ -2,7 +2,7 @@ const Product = require('../models/productModel');
 
 const getProducts = async (req, res, next) => {
     try {
-        const pageSize = Number(req.query.pageSize) || 12;
+        const pageSize = Number(req.query.pageSize) || 9;
         const page = Number(req.query.pageNumber) || 1;
 
         const keyword = req.query.keyword
