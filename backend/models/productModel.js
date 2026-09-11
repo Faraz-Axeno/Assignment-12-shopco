@@ -1,22 +1,5 @@
 const mongoose = require('mongoose');
 
-const reviewSchema = mongoose.Schema({
-    name: { 
-        type: String, 
-        required: true 
-    },
-    rating: { 
-        type: Number, 
-        required: true },
-    comment: { 
-        type: String, 
-        required: true 
-    },
-    date: { 
-        type: String, 
-        required: true }, 
-}, { timestamps: true });
-
 const productSchema = mongoose.Schema({
     user: { 
         type: mongoose.Schema.Types.ObjectId, 
@@ -63,7 +46,7 @@ const productSchema = mongoose.Schema({
         type: String, 
         default: 'In Stock' 
     },
-    reviews: [reviewSchema],
+    
     rating: { 
         type: Number, 
         required: true, 

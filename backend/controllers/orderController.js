@@ -19,7 +19,6 @@ const addOrderItems = async (req, res, next) => {
                     throw new Error(`Product not found: ${item.product}`);
                 }
 
-                // Check size-specific inventory
                 const sizeStock = product.sizes && product.sizes[item.size] ? product.sizes[item.size] : 0;
                 if (sizeStock < item.qty) {
                     res.status(400);
@@ -119,7 +118,6 @@ const updateOrderStatus = async (req, res, next) => {
     }
 };
 
-// Dashboard Stats
 const getDashboardStats = async (req, res, next) => {
     try {
         const totalProducts = await Product.countDocuments();
@@ -151,13 +149,11 @@ const cancelOrder = async (req, res, next) => {
             throw new Error('Order not found');
         }
 
-        // Check permissions: only admin or the user who placed the order can cancel
         if (order.user.toString() !== req.user._id.toString() && !req.user.isAdmin) {
             res.status(401);
             throw new Error('Not authorized to cancel this order');
         }
 
-        // Check if order can be cancelled
         if (order.status === 'Shipped' || order.status === 'Delivered') {
             res.status(400);
             throw new Error('Cannot cancel an order that has already been shipped or delivered');
@@ -171,7 +167,6 @@ const cancelOrder = async (req, res, next) => {
         order.status = 'Cancelled';
         await order.save();
 
-        // Rollback inventory
         for (const item of order.orderItems) {
             const product = await Product.findById(item.product);
             if (product && product.sizes && product.sizes[item.size] !== undefined) {

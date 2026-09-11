@@ -91,6 +91,15 @@ const AdminDashboard = () => {
 
     const handleAddProduct = async (e) => {
         e.preventDefault();
+        
+        const totalStock = Object.values(newProduct.sizes).reduce((acc, stock) => acc + Number(stock), 0);
+        const hasNegativeStock = Object.values(newProduct.sizes).some(stock => Number(stock) < 0);
+
+        if (!newProduct.name || !newProduct.price || !newProduct.image || !newProduct.category || totalStock === 0 || hasNegativeStock) {
+            toast.error('Please fill all required fields and ensure stock is greater than 0');
+            return;
+        }
+
         try {
             await axios.post(`${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/products`, {
                 ...newProduct,
